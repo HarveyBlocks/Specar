@@ -51,8 +51,9 @@ public class ConsultationContentAdminController {
     @ApiOperation(value = "分页查询用户咨询")
     public Result<List<ConsultationContentDto>> consultation(
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 不提供就使用默认值
         throw new UncompletedException("分页查询购车咨询");
     }
@@ -72,8 +73,9 @@ public class ConsultationContentAdminController {
     @ApiResponse(message = "包含用户信息和咨询信息", code = 200)
     public Result<List<ConsultationContentWithUserEntityDto>> bothByPage(
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 不提供就使用默认值
         throw new UncompletedException("分页查询购车咨询+用户信息");
     }

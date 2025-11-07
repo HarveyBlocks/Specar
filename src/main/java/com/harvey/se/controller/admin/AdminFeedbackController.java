@@ -5,6 +5,7 @@ import com.harvey.se.pojo.dto.FeedbackDto;
 import com.harvey.se.pojo.vo.Null;
 import com.harvey.se.pojo.vo.Result;
 import com.harvey.se.properties.ConstantsProperties;
+import com.harvey.se.util.ConstantsInitializer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -30,16 +31,24 @@ import java.util.List;
 @EnableConfigurationProperties(ConstantsProperties.class)
 public class AdminFeedbackController {
 
+    @Resource
+    private ConstantsInitializer constantsInitializer;
+
     @GetMapping(value = "/feedback-oldest/{time-from}/{time-to}/{limit}/{page}")
     @ApiOperation("查询一定时间内的未读的用户反馈")
     @ApiResponse(code = 200, message = "按照时间排序, 返回的时间顺序和参数的from-to一致")
     public Result<List<FeedbackDto>> getFeedbackDtoByTimeRange(
-            @PathVariable(value = "time-from", required = false) @ApiParam("日期查询的起点(包含)") Date timeFrom,
-            @PathVariable(value = "time-to", required = false) @ApiParam("日期查询的终点(包含)") Date timeTo,
+            @PathVariable(value = "time-from", required = false)
+            @ApiParam(value = "日期查询的起点(包含)", example = ConstantsProperties.AUTHORIZATION_HEADER)
+            String timeFrom,
+            @PathVariable(value = "time-to", required = false)
+            @ApiParam(value = "日期查询的终点(包含)", example = ConstantsProperties.AUTHORIZATION_HEADER) String timeTo,
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 依据请求发送的时间查询, 从旧到新排序
+
         throw new UncompletedException("查询从旧到新的未读反馈");
     }
 
@@ -47,11 +56,15 @@ public class AdminFeedbackController {
     @ApiOperation("查询一定时间内的已读的用户反馈")
     @ApiResponse(code = 200, message = "按照时间排序, 返回的时间顺序和参数的from-to一致")
     public Result<List<FeedbackDto>> getReadFeedbackDtoByTimeRange(
-            @PathVariable(value = "time-from", required = false) @ApiParam("日期查询的起点(包含)") Date timeFrom,
-            @PathVariable(value = "time-to", required = false) @ApiParam("日期查询的终点(包含)") Date timeTo,
+            @PathVariable(value = "time-from", required = false)
+            @ApiParam(value = "日期查询的起点(包含)", example = ConstantsProperties.AUTHORIZATION_HEADER)
+            String timeFrom,
+            @PathVariable(value = "time-to", required = false)
+            @ApiParam(value = "日期查询的终点(包含)", example = ConstantsProperties.AUTHORIZATION_HEADER) String timeTo,
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 已读的
         // 依据请求发送的时间查询, 从新到旧排序
         throw new UncompletedException("查询从新到旧的已读反馈");
@@ -63,8 +76,9 @@ public class AdminFeedbackController {
             @PathVariable(value = "user-id", required = true) @ApiParam(value = "用户id", required = true) Long userId,
             @PathVariable(value = "read", required = false) @ApiParam(value = "默认null, 表示两个都查") Boolean read,
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 对某条反馈已读
         throw new UncompletedException("将反馈标记为已读");
     }

@@ -34,8 +34,9 @@ public class GiftController {
     @ApiResponse(code = 200, message = "按照id升序")
     public Result<List<GiftDto>> queryAll(
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 不提供就使用默认值
         throw new UncompletedException("分页查询商品简略信息");
     }
@@ -45,12 +46,13 @@ public class GiftController {
     @ApiResponse(code = 200, message = "使用升序排序")
     public Result<List<GiftDto>> queryCostInRange(
             @PathVariable(value = "lower", required = false)
-            @ApiParam(value = "商品花费积分下限(包含)", defaultValue = "0") String lower,
+            @ApiParam(value = "商品花费积分下限(包含)", defaultValue = "0") Integer lower,
             @PathVariable(value = "upper", required = false)
-            @ApiParam(value = "商品花费积分上限(包含)", defaultValue = "null, 表示无限") String upper,
+            @ApiParam(value = "商品花费积分上限(包含)", defaultValue = "null, 表示无限") Integer upper,
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 按照花销排序, 使用升序排序
         throw new UncompletedException("依据积分花费的上下限来进行查询");
     }

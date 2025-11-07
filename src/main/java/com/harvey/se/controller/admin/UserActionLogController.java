@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,8 +38,9 @@ public class UserActionLogController {
             @PathVariable(value = "longer-than")
             @ApiParam(value = "长度大于此毫秒数(包括)的, 将被返回", required = true) Integer longerThan,
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 在服务器消费耗费长的操作
         // 倒序排序
         throw new UncompletedException("在服务器消费耗费长的操作, 从花费长到花费短");
@@ -52,12 +52,14 @@ public class UserActionLogController {
     @ApiResponse(code = 200, message = "按照时间排序, 返回的时间顺序和参数的from-to一致")
     public Result<List<UserActionLogDto>> getLatestActionByRequestTimeRange(
             @PathVariable(value = "time-from", required = false)
-            @ApiParam("日期查询的起点(包含)") Date timeFrom,
+            @ApiParam(value = "日期查询的起点(包含)", example = ConstantsProperties.AUTHORIZATION_HEADER)
+            String timeFrom,
             @PathVariable(value = "time-to", required = false)
-            @ApiParam("日期查询的终点(包含)") Date timeTo,
+            @ApiParam(value = "日期查询的终点(包含)", example = ConstantsProperties.AUTHORIZATION_HEADER) String timeTo,
             @PathVariable(value = "limit", required = false)
-            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) String limit,
-            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1") String page) {
+            @ApiParam(value = "页长", defaultValue = ConstantsProperties.DEFAULT_PAGE_SIZE) Integer limit,
+            @PathVariable(value = "page", required = false) @ApiParam(value = "页号", defaultValue = "1")
+            Integer page) {
         // 依据请求发送的时间查询, 从新到旧排序
         throw new UncompletedException("依据请求发送的时间查询, 从新到旧排序");
     }

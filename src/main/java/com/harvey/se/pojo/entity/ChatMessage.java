@@ -4,51 +4,50 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.harvey.se.pojo.dto.FeedbackDto;
+import com.harvey.se.exception.ResourceNotFountException;
+import com.harvey.se.pojo.dto.ChatMessageDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
-
 /**
- * 咨询内容
- *
  * @author <a href="mailto:harvey.blocks@outlook.com">Harvey Blocks</a>
  * @version 1.0
- * @date 2025-11-08 00:45
+ * @date 2025-11-09 14:14
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("`tb_feedback`")
+@TableName("`tb_chat_message`")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Feedback {
+public class ChatMessage {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     @TableField("user_id")
     private Long userId;
 
-    @TableField("text")
     private String text;
 
-    @TableField("create_time")
-    private Date createTime;
+    @TableField(value = "from_user")
+    private boolean formUser;
 
-    @TableField("has_read")
-    private Boolean hasRead;
+    @TableField(value = "create_time")
+    private java.util.Date createTime;
 
-    public Feedback(FeedbackDto dto) {
-        this(
+    public static ChatMessage adapt(ChatMessageDto dto) {
+        if (dto == null) {
+            throw new ResourceNotFountException("请求参数是不存在的资源");
+        }
+        return new ChatMessage(
                 dto.getId(),
                 dto.getUserId(),
                 dto.getText(),
-                dto.getCreateTime(),
-                dto.getRead()
+                dto.isFormUser(),
+                dto.getCreateTime()
         );
     }
 }

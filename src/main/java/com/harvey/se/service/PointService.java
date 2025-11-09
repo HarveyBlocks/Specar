@@ -13,5 +13,13 @@ import java.util.concurrent.TimeUnit;
  */
 public interface PointService {
 
-    void add(String keyPre, UserDto user, int point, int timeout, TimeUnit unit);
+    /**
+     * @param keyPre  键
+     * @param user    目标用户
+     * @param count   一次间隔允许加几次分
+     * @param point   每次加分
+     * @param timeout 时间间隔
+     * @param unit    间隔单位
+     */
+    void add(String keyPre, UserDto user, int count, int point, int timeout, TimeUnit unit);
 }

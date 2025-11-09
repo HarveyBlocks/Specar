@@ -23,7 +23,7 @@ import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
- *  反馈功能
+ * 反馈功能
  *
  * @author <a href="mailto:harvey.blocks@outlook.com">Harvey Blocks</a>
  * @version 1.0
@@ -46,14 +46,11 @@ public class FeedbackController {
             @RequestBody @ApiParam(value = "反馈的文本, 最多250字", required = true) String text) {
         // 进行反馈, 反馈有加积分, 加多少再议
         //  一天在这个项目上只能加一次积分
-        pointService.add(RedisConstants.Point.FEEDBACK, UserHolder.getUser(), 5, 1, TimeUnit.DAYS);
-        feedbackService.saveNew(new Feedback(
-                null,
+        pointService.add(RedisConstants.Point.FEEDBACK, UserHolder.getUser(), 1, 5, 1, TimeUnit.DAYS);
+        feedbackService.saveNew(
                 UserHolder.currentUserId(),
-                text,
-                ConstantsInitializer.nowDateTime(),
-                false
-        ));
+                new Feedback(null, UserHolder.currentUserId(), text, ConstantsInitializer.nowDateTime(), false)
+        );
         return Result.ok();
     }
 }

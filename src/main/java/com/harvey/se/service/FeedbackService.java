@@ -20,5 +20,6 @@ public interface FeedbackService extends IService<Feedback> {
 
     void read(Long id);
 
-    void saveNew(Feedback feedback);
+
+    void saveNew(Long userId, Feedback feedback);
 }

@@ -17,6 +17,7 @@ public class RedisConstants {
     public static class Point {
         public static final String FEEDBACK = CACHE_KEY_PRE + "point:feedback:";
 
+        public static final String CHAT = CACHE_KEY_PRE + "point:chat:";
     }
 
     public static class User {
@@ -36,5 +37,10 @@ public class RedisConstants {
         public static final String PIECE_QUEUE_KEY = CACHE_KEY_PRE + "chat:pieces:";
         public static final String ID_GENERATOR = CACHE_KEY_PRE + "chat:id:";
         public static final String MULTIPLY_LEFT_POP_LUA = "mul_left_pop.lua";
+        public static final long PIECE_QUEUE_EXPIRE_SECOND = 60 * 60;// 保存一个小时
+    }
+
+    public static class Feedback {
+        public static final String PREVENT_DURATION_KEY = CACHE_KEY_PRE + "feedback:prevent:";
     }
 }

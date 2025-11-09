@@ -50,6 +50,7 @@ public class UserActionLogDto {
 
     @ApiModelProperty(value = "Http响应状态码")
     private Integer responseStatusCode;
+
     public static UserActionLogDto adapte(UserActionLog entity) {
         if (entity == null) {
             throw new ResourceNotFountException("请求不存在的资源");

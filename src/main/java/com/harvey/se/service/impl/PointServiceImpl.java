@@ -25,16 +25,25 @@ public class PointServiceImpl implements PointService {
     private UserService userService;
 
     @Override
-    public void add(String keyPre, UserDto user, int point, int timeout, TimeUnit unit) {
+    public void add(String keyPre, UserDto user, int count, int point, int timeout, TimeUnit unit) {
         // 1. 检查缓存, 是否已经加过分
         String flagKey = keyPre + user.getId();
-        boolean hasKeys = Boolean.TRUE.equals(stringRedisTemplate.hasKey(flagKey));
-        if (hasKeys) {
-            return;
+        String release = stringRedisTemplate.opsForValue().get(flagKey);
+        int releaseCnt;
+        if (release != null && !release.isEmpty()) {
+            releaseCnt = Integer.parseInt(release);
+            if (releaseCnt == 0) {
+                // 不能执行
+                return;
+            }
+            releaseCnt--;
+        } else {
+            releaseCnt = count - 1;
         }
-        // 2. 增加缓存标记
-        stringRedisTemplate.opsForValue().set(flagKey, flagKey, timeout);
+        // 2. 增加/修改缓存标记
+        stringRedisTemplate.opsForValue().set(flagKey, String.valueOf(releaseCnt), timeout, unit);
         // 3. 增加积分
         userService.increasePoint(user.getId(), user.getPoints(), point);
+
     }
 }

@@ -1,5 +1,7 @@
 package com.harvey.se.pojo.dto;
 
+import com.harvey.se.exception.ResourceNotFountException;
+import com.harvey.se.pojo.entity.ChatMessage;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -7,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * TODO
- *
  * @author <a href="mailto:harvey.blocks@outlook.com">Harvey Blocks</a>
  * @version 1.0
  * @date 2025-11-09 14:14
@@ -33,4 +33,17 @@ public class ChatMessageDto {
 
     @ApiModelProperty(value = "其实是上传时间")
     private java.util.Date createTime;
+
+    public static ChatMessageDto adapt(ChatMessage entity) {
+        if (entity == null) {
+            throw new ResourceNotFountException("请求不存在的资源");
+        }
+        return new ChatMessageDto(
+                entity.getId(),
+                entity.getUserId(),
+                entity.getText(),
+                entity.isFormUser(),
+                entity.getCreateTime()
+        );
+    }
 }

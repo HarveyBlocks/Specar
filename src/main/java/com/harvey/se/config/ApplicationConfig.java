@@ -2,8 +2,8 @@ package com.harvey.se.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.harvey.se.properties.ChatProperties;
 import com.harvey.se.properties.ConstantsProperties;
+import com.harvey.se.properties.RobotChatProperties;
 import com.harvey.se.util.JacksonUtil;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  * @date 2024-01-21 21:13
  */
 @Configuration
-@EnableConfigurationProperties({ConstantsProperties.class, ChatProperties.class})
+@EnableConfigurationProperties({ConstantsProperties.class, RobotChatProperties.class})
 public class ApplicationConfig {
     @Resource
     private ConstantsProperties constantsProperties;

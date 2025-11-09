@@ -5,14 +5,19 @@ import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWra
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.harvey.se.dao.FeedbackMapper;
+import com.harvey.se.exception.BadRequestException;
 import com.harvey.se.pojo.dto.FeedbackDto;
 import com.harvey.se.pojo.entity.Feedback;
 import com.harvey.se.pojo.vo.DateRange;
 import com.harvey.se.service.FeedbackService;
 import com.harvey.se.service.ServiceUtil;
+import com.harvey.se.util.RedisConstants;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -58,13 +63,29 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
         }
     }
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
-    public void saveNew(Feedback feedback) {
+    public void saveNew(Long userId, Feedback feedback) {
+        validFeedback(userId);
         feedback.setId(null);
         feedback.setHasRead(false);
         boolean saved = super.save(feedback);
         if (!saved) {
             log.warn("保存反馈信息 {} 失败" + feedback);
         }
+    }
+
+    private void validFeedback(Long userId) {
+        // 1. 检查缓存, 是否已经加过分
+        String flagKey = RedisConstants.Feedback.PREVENT_DURATION_KEY + userId;
+        boolean hasKeys = Boolean.TRUE.equals(stringRedisTemplate.hasKey(flagKey));
+        if (hasKeys) {
+            throw new BadRequestException("一小时只能反馈一次");
+        }
+        // 2. 增加缓存标记
+        // 一小时只能反馈一次
+        stringRedisTemplate.opsForValue().set(flagKey, flagKey, 1, TimeUnit.HOURS);
     }
 }

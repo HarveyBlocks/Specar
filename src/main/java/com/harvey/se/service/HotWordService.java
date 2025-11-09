@@ -14,5 +14,7 @@ import java.util.List;
 public interface HotWordService extends IService<HotWord> {
     List<HotWordDto> top(Integer limit);
 
-    List<HotWord> batchInsert(List<String> keywords);
+    void batchInsert(List<String> keywords);
+
+    void summaryKeyword(String text);
 }

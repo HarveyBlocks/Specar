@@ -73,6 +73,20 @@ create table tb_gift
     picture_url2 varchar(255)     not null,
     picture_url3 varchar(255)     not null
 ) comment '礼品表';
+
+create table tb_chat_message
+(
+    id          int8     not null primary key,
+    user_id     int8     not null,
+    text        Text     not null,
+    create_time datetime not null default NOW(),
+    constraint tb_chat_message_user_id_fk foreign key (user_id) references tb_user (id)
+) comment '聊天信息';
+
+create index tb_chat_message_user_id_create_time_index
+    on tb_chat_message (user_id, create_time);
+
+
 -- 下面的不启用
 create table tb_item
 (
